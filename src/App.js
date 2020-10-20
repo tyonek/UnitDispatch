@@ -2,27 +2,27 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import LandingPage from './routes/LandingPage/LandingPage';
-import HowBroker from './routes/AccountInfo/HowDealer/HowDealer';
-import HowDealer from './routes/AccountInfo/HowBroker/HowBroker';
-import HowTransporter from './routes/AccountInfo/HowTransporter/HowTransporter';
+import HowToSell from './routes/AccountInfo/HowToSell/HowToSell';
+import HowToBuy from './routes/AccountInfo/HowToBuy/HowToBuy';
+import HowtoTransport from './routes/AccountInfo/HowToTransport/HowToTransport';
 import SignUp from './routes/Signup/Signup';
 import Login from './routes/Login/Login';
-import Dealer from './routes/UserAccounts/Dealer/Dealer';
-import Broker from './routes/UserAccounts/Broker/Broker';
-import Transporter from './routes/UserAccounts/Transporter/Transporter';
+import Seller from './routes/UserAccounts/Seller/Seller';
+import Buyer from './routes/UserAccounts/Buyer/Buyer';
+import Transporter from './routes/UserAccounts/Transporter/Transporter'; 
 export default class App extends Component{
  render(){
    return(
      <div>
        <Switch>
          <Route exact path={'/'} component={LandingPage}></Route>
-         <Route path={'/howdealer'} component={HowDealer}></Route>
-         <Route path={'/howbroker'} component={HowBroker}></Route>
-         <Route path={'/howtransporter'} component={HowTransporter}></Route>
+         <Route path={'/howtosell'} component={HowToSell}></Route>
+         <Route path={'/howtobuy'} component={HowToBuy}></Route>
+         <Route path={'/howtotransport'} component={HowtoTransport}></Route>
          <Route path={'/signup'} component={SignUp}></Route>
          <Route path={'/login'} component={Login}></Route>
-         <Route path={'/dealer'} compomnent={Dealer}></Route>
-         <Route path={'/broker'} component={Broker}></Route>
+         <Route path={'/seller'} compomnent={Seller}></Route>
+         <Route path={'/buyer'} component={Buyer}></Route>
          <Route path={'/transporter'} component={Transporter}></Route>
        </Switch>
      </div>
