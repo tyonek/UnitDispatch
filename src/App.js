@@ -7,7 +7,7 @@ import HowToBuy from './routes/AccountInfo/HowToBuy/HowToBuy';
 import HowtoTransport from './routes/AccountInfo/HowToTransport/HowToTransport';
 import SignUp from './routes/Signup/Signup';
 import Login from './routes/Login/Login';
-import Seller from './routes/UserAccounts/Seller/Seller';
+import Seller from './routes/UserAccounts/Sell/Sell';
 import Buyer from './routes/UserAccounts/Buyer/Buyer';
 import Transporter from './routes/UserAccounts/Transporter/Transporter'; 
 export default class App extends Component{
