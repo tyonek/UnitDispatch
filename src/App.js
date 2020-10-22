@@ -7,8 +7,7 @@ import HowToBuy from './routes/AccountInfo/HowToBuy/HowToBuy';
 import HowtoTransport from './routes/AccountInfo/HowToTransport/HowToTransport';
 import SignUp from './routes/Signup/Signup';
 import Login from './routes/Login/Login';
-import Seller from './routes/UserAccounts/Sell/Sell';
-import Buyer from './routes/UserAccounts/Buyer/Buyer';
+import Standard from './routes/UserAccounts/Standard/Standard';
 import Transporter from './routes/UserAccounts/Transporter/Transporter'; 
 export default class App extends Component{
  render(){
@@ -21,8 +20,7 @@ export default class App extends Component{
          <Route path={'/howtotransport'} component={HowtoTransport}></Route>
          <Route path={'/signup'} component={SignUp}></Route>
          <Route path={'/login'} component={Login}></Route>
-         <Route path={'/seller'} compomnent={Seller}></Route>
-         <Route path={'/buyer'} component={Buyer}></Route>
+         <Route path={'/standard'} compomnent={Standard}></Route>
          <Route path={'/transporter'} component={Transporter}></Route>
        </Switch>
      </div>
