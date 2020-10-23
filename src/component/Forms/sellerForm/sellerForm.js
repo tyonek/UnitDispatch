@@ -46,15 +46,16 @@ export const sellerForm = (props) => {
 	return (
 		<form>
 			<input placeholder="Brand" />
-			<select>
-				<option>Bad</option>
-				<option>Good</option>
-				<option>Excellent</option>
+			<select defaultValue>
+                <option value="Select">Select Condition... </option>
+				<option value="Bad">Bad</option>
+				<option value="Good">Good</option>
+				<option value="Excellent">Excellent</option>
 			</select>
 			<select>{categoryOfItems.map((category) => <option>{category}</option>)}</select>
 			<textarea placeholder="Description" />
 			<input placeholder="Price" />
-
+            <input type="file" name="datafile" size="40"/>
             <button type="submit">Done</button>
 		</form>
 	);
