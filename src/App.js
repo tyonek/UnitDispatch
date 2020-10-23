@@ -9,6 +9,7 @@ import SignUp from './routes/Signup/Signup';
 import Login from './routes/Login/Login';
 import Standard from './routes/UserAccounts/Standard/Standard';
 import Transporter from './routes/UserAccounts/Transporter/Transporter'; 
+import Sell from './routes/sell/sell'
 export default class App extends Component{
  render(){
    return(
@@ -22,6 +23,7 @@ export default class App extends Component{
          <Route path={'/login'} component={Login}></Route>
          <Route path={'/standard'} compomnent={Standard}></Route>
          <Route path={'/transporter'} component={Transporter}></Route>
+         <Route path={'/sell'} component={Sell}></Route>
        </Switch>
      </div>
    )
