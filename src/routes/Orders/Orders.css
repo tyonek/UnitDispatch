@@ -1,0 +1,19 @@
+.Orders{
+    margin: 0 auto;
+    width: 80%;
+}
+.orderList ul li .item{
+    display: flex;
+    justify-content: center;
+    margin: 50px auto;
+
+}
+.orderList ul li .item div{
+   display: block;
+   margin-left:100px ;
+   margin-right: 100px;
+}
+.grandTotal{
+    float: right;
+    margin-right: 110px;
+}
