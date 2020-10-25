@@ -1,0 +1,22 @@
+header .Links{
+    display: flex;
+    height: 50px;
+    margin: 0 20px;    
+    float: right;
+
+}
+header .Links a{
+ margin-right:10px ;
+
+}
+header .content{
+    display: flex;
+    height: 50px;
+    justify-content: space-evenly;
+    margin: 10px auto;
+    width: 90%;
+}
+header .content svg{
+    font-size: 30px;
+    margin-top: 10px;
+}
