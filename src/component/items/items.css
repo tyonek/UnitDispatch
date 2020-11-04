@@ -1,0 +1,21 @@
+.item{
+    padding: 30px;
+    background-color: rgb(241, 241, 241);
+    border-radius: 10px;
+}
+.item .itemBtnContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 10px auto;
+
+    
+}
+.item .itemBtnContainer button{
+    width: 50px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+
+    
+}

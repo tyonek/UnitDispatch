@@ -1,40 +1,44 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import Header from '../../component/header/header';
+import Item from '../../component/items/items';
 import './LandingPage.css';
 export default class LandingPage extends Component {
+	state = {
+		items: [
+			{
+				Name: 'Name',
+				Description: 'Description',
+				Price: 'Price',
+				Location: 'Location',
+				Rating: 'Rating',
+				DatePosted: 'DatePosted'
+			},
+			{
+				Name: 'Name',
+				Description: 'Description',
+				Price: 'Price',
+				Location: 'Location',
+				Rating: 'Rating',
+				DatePosted: 'DatePosted'
+			},
+			{
+				Name: 'Name',
+				Description: 'Description',
+				Price: 'Price',
+				Location: 'Location',
+				Rating: 'Rating',
+				DatePosted: 'DatePosted'
+			}
+		]
+	};
 	render() {
 		return (
 			<div>
+				<Header />
 				<h2> Welcome </h2>
 				<div className="itemsToBeBought">
-					<div className="item">
-						<img src="" alt="buying" />
-						<h2>Name of the Item </h2>
-						<h4> Description </h4>
-						<h4>Price </h4>
-						<h5>Location </h5>
-						<h5>Rating </h5>
-						<h5>Date Posted </h5>
-					</div>
-					<div className="item">
-						<img src="" alt="buying" />
-						<h2>Name of the Item </h2>
-						<h4> Description </h4>
-						<h4>Price </h4>
-						<h5>Location </h5>
-						<h5>Rating </h5>
-						<h5>Date Posted </h5>
-					</div>
-					<div className="item">
-						<img src="" alt="buying" />
-						<h2>Name of the Item </h2>
-						<h4> Description </h4>
-						<h4>Price </h4>
-						<h5>Location </h5>
-						<h5>Rating </h5>
-						<h5>Date Posted </h5>
-					</div>
+				{this.state.items.map((item)=><Item item={item} addItemsToShoppingCart={this.props.addItemsToShoppingCart}/>)}	
 				</div>
 			</div>
 		);

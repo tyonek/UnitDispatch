@@ -47,3 +47,12 @@ header .content .accountInfo ul li{
  cursor: pointer;
 
 }
+.shoppingCartIconContainer{
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+}
+.shoppingCartIconContainer div{
+    transform: translate(35px,-40px);
+    color: red;
+}
