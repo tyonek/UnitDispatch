@@ -17,18 +17,54 @@ import Context from './context';
 export default class App extends Component {
 	state = {
 		shoppingCart: [],
-		wishList: []
+		wishList: [],
+		items: [
+			{
+				Name: 'Name',
+				Description: 'Description',
+				Price: 'Price',
+				Location: 'Location',
+				Rating: 'Rating',
+				wishlist: false,
+				DatePosted: 'DatePosted'
+			},
+			{
+				Name: 'Name',
+				Description: 'Description',
+				Price: 'Price',
+				Location: 'Location',
+				Rating: 'Rating',
+				wishlist: false,
+				DatePosted: 'DatePosted'
+			},
+			{
+				Name: 'Name',
+				Description: 'Description',
+				Price: 'Price',
+				Location: 'Location',
+				Rating: 'Rating',
+				wishlist: false,
+				DatePosted: 'DatePosted'
+			}
+		]
 	};
 
 	addItemsToShoppingCart = (item) => {
 		let currentShoppingCart = this.state.shoppingCart;
 		currentShoppingCart.push(item);
 		this.setState({ shoppingCart: currentShoppingCart });
-		console.log(this.state.shoppingCart);
+	};
+	addItemsToWishList = (item) => {
+		console.log(item);
+		let wishList = this.state.wishList;
+		item.wishlist = true;
+		wishList.push(item);
+		this.setState({ wishList: wishList, item: item });
 	};
 	render() {
 		const value = {
-			shoppingListCounter: this.state.shoppingCart.length
+			shoppingListCounter: this.state.shoppingCart.length,
+			items: this.state.items
 		};
 		return (
 			<div>
@@ -37,7 +73,13 @@ export default class App extends Component {
 						<Route
 							exact
 							path={'/'}
-							component={() => <LandingPage addItemsToShoppingCart={this.addItemsToShoppingCart} />}
+							component={() => (
+								<LandingPage
+									addItemsToShoppingCart={this.addItemsToShoppingCart}
+									addItemsToWishList={this.addItemsToWishList}
+									items={this.state.items}
+								/>
+							)}
 						/>
 						<Route path={'/howtosell'} component={HowToSell} />
 						<Route path={'/howtobuy'} component={HowToBuy} />

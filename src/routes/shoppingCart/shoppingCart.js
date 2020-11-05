@@ -3,7 +3,7 @@ import Header from '../../component/header/header';
 import ShoppingItem from '../../component/shoppingItem/shoppingItem'
 import './shoppingCart.css';
 export const ShoppingCart = (props) => {
-    console.log(props);
+    
 	return (
 		<div>
 			<Header />
@@ -11,7 +11,7 @@ export const ShoppingCart = (props) => {
             {
                 props.shoppingCart.map((item)=><ShoppingItem item={item}/>)
             }
-                    
+                 
 			</div>
 		</div>
 	);

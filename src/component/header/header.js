@@ -73,17 +73,24 @@ export const Header = (props) => {
 								<div>{content.shoppingListCounter}</div>
 							</div>
 						</Link>
-						<i class="fas fa-bell" />
+						<Link to="/notification">
+							<div className="notificationIconContainer">
+								<i class="fas fa-bell" />
+								<div>0</div>
+							</div>
+						</Link>
+
 						<div className="accountInfoContainer">
 							<div className="account" onClick={() => showAccountDropdown(!dropDown)}>
 								Account
 							</div>
+
 							{dropDown ? (
 								<div className="accountInfo">
 									<ul>
 										<Link to="/orders">
 											{' '}
-											<li>Orders </li>{' '}
+											<li>Purchased </li>{' '}
 										</Link>
 										<Link to="/selling">
 											<li>Selling </li>{' '}

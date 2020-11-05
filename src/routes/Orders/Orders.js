@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import Header from '../../component/header/header'
 import './Orders.css';
 export default class Orders extends Component {
 	render() {
 		return (
 			<div className="Orders">
+			<Header/>
 				<div className="orderList">
 					<ul>
 						<li>
@@ -44,12 +46,8 @@ export default class Orders extends Component {
 						</li>
 					</ul>
 
-					<hr />
-					<div className="grandTotal">
-						<h5>Total</h5>
-						<h5>Tax</h5>
-                        <h5>transportation </h5>
-					</div>
+					
+					
 				</div>
 			</div>
 		);

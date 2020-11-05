@@ -5,32 +5,7 @@ import Item from '../../component/items/items';
 import './LandingPage.css';
 export default class LandingPage extends Component {
 	state = {
-		items: [
-			{
-				Name: 'Name',
-				Description: 'Description',
-				Price: 'Price',
-				Location: 'Location',
-				Rating: 'Rating',
-				DatePosted: 'DatePosted'
-			},
-			{
-				Name: 'Name',
-				Description: 'Description',
-				Price: 'Price',
-				Location: 'Location',
-				Rating: 'Rating',
-				DatePosted: 'DatePosted'
-			},
-			{
-				Name: 'Name',
-				Description: 'Description',
-				Price: 'Price',
-				Location: 'Location',
-				Rating: 'Rating',
-				DatePosted: 'DatePosted'
-			}
-		]
+	
 	};
 	render() {
 		return (
@@ -38,7 +13,7 @@ export default class LandingPage extends Component {
 				<Header />
 				<h2> Welcome </h2>
 				<div className="itemsToBeBought">
-				{this.state.items.map((item)=><Item item={item} addItemsToShoppingCart={this.props.addItemsToShoppingCart}/>)}	
+				{this.props.items.map((item)=><Item item={item} addItemsToWishList={this.props.addItemsToWishList} addItemsToShoppingCart={this.props.addItemsToShoppingCart}/>)}	
 				</div>
 			</div>
 		);

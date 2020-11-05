@@ -1,6 +1,10 @@
 import React from 'react';
 import './items.css';
 export const Item = (props) => {
+	let wishListColor = 'black';
+	if (props.item.wishlist) {
+		wishListColor = 'red';
+	}
 	return (
 		<div className="item">
 			<img src="" alt="buying" />
@@ -10,11 +14,19 @@ export const Item = (props) => {
 			<h5>Location: {props.item.Location} </h5>
 			<h5>Rating: {props.item.Rating} </h5>
 			<h5>DatePosted: {props.item.DatePosted} </h5>
-            <div className="itemBtnContainer">
-            <button onClick={()=>props.addItemsToShoppingCart(props.item)}><i class="fas fa-cart-arrow-down" /></button>
-            <button><i class="fas fa-heart"></i></button>
-            </div>
-
+			<div className="itemBtnContainer">
+				<button onClick={() => props.addItemsToShoppingCart(props.item)}>
+					<i class="fas fa-cart-arrow-down" />
+				</button>
+				<button
+					style={{
+						color: `${wishListColor}`
+					}}
+					onClick={()=>props.addItemsToWishList(props.item)}
+				>
+					<i class="fas fa-heart" />
+				</button>
+			</div>
 		</div>
 	);
 };
