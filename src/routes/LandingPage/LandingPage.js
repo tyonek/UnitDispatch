@@ -13,7 +13,7 @@ export default class LandingPage extends Component {
 				<Header />
 				<h2> Welcome </h2>
 				<div className="itemsToBeBought">
-				{this.props.items.map((item)=><Item item={item} addItemsToWishList={this.props.addItemsToWishList} addItemsToShoppingCart={this.props.addItemsToShoppingCart}/>)}	
+				{this.props.items.map((item,i)=><Item key={i} item={item} addItemsToWishList={this.props.addItemsToWishList} addItemsToShoppingCart={this.props.addItemsToShoppingCart}/>)}	
 				</div>
 			</div>
 		);

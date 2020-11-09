@@ -16,7 +16,7 @@ export const Item = (props) => {
 			<h5>DatePosted: {props.item.DatePosted} </h5>
 			<div className="itemBtnContainer">
 				<button onClick={() => props.addItemsToShoppingCart(props.item)}>
-					<i class="fas fa-cart-arrow-down" />
+					<i className="fas fa-cart-arrow-down" />
 				</button>
 				<button
 					style={{
@@ -24,7 +24,7 @@ export const Item = (props) => {
 					}}
 					onClick={()=>props.addItemsToWishList(props.item)}
 				>
-					<i class="fas fa-heart" />
+					<i className="fas fa-heart" />
 				</button>
 			</div>
 		</div>

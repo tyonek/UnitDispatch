@@ -13,6 +13,7 @@ import Sell from './routes/sell/sell';
 import Selling from './routes/selling/selling';
 import Orders from './routes/Orders/Orders';
 import ShoppingCart from './routes/shoppingCart/shoppingCart';
+import WishList from './routes/wishList/wishList'
 import Context from './context';
 export default class App extends Component {
 	state = {
@@ -20,6 +21,7 @@ export default class App extends Component {
 		wishList: [],
 		items: [
 			{
+				id:1,
 				Name: 'Name',
 				Description: 'Description',
 				Price: 'Price',
@@ -29,6 +31,7 @@ export default class App extends Component {
 				DatePosted: 'DatePosted'
 			},
 			{
+				id:2,
 				Name: 'Name',
 				Description: 'Description',
 				Price: 'Price',
@@ -38,6 +41,7 @@ export default class App extends Component {
 				DatePosted: 'DatePosted'
 			},
 			{
+				id:3,
 				Name: 'Name',
 				Description: 'Description',
 				Price: 'Price',
@@ -55,17 +59,25 @@ export default class App extends Component {
 		this.setState({ shoppingCart: currentShoppingCart });
 	};
 	addItemsToWishList = (item) => {
-		console.log(item);
-		let wishList = this.state.wishList;
-		item.wishlist = true;
-		wishList.push(item);
-		this.setState({ wishList: wishList, item: item });
+		console.log(item.wishlist);
+		if (item.wishlist === true) {
+			let wishList = this.state.wishList.filter((wishedItem) => wishedItem.id !== item.id);
+			item.wishlist = false;
+			this.setState({ wishList: wishList, item: item });
+		} else {
+			let wishList = this.state.wishList;
+			item.wishlist = true;
+			wishList.push(item);
+			this.setState({ wishList: wishList, item: item });
+			console.log(item.wishlist);
+		}
 	};
 	render() {
 		const value = {
 			shoppingListCounter: this.state.shoppingCart.length,
 			items: this.state.items
 		};
+		console.log(this.state.wishList);
 		return (
 			<div>
 				<Context.Provider value={value}>
@@ -91,6 +103,7 @@ export default class App extends Component {
 						<Route path={'/sell'} component={Sell} />
 						<Route path={'/selling'} component={Selling} />
 						<Route path={'/orders'} component={Orders} />
+						<Route path={'/wishlist'} component={()=><WishList wishList={this.state.wishList} addItemsToWishList={this.addItemsToWishList} />} />
 						<Route
 							path={'/shoppingcart'}
 							component={() => <ShoppingCart shoppingCart={this.state.shoppingCart} />}

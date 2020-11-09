@@ -63,19 +63,19 @@ export const Header = (props) => {
 						<Link to="/">
 							<h1>Logo </h1>{' '}
 						</Link>
-						<select>{categoryOfItems.map((category) => <option>{category}</option>)}</select>
+						<select>{categoryOfItems.map((category,i) => <option key={i}>{category}</option>)}</select>
 						<input placeholder="Search" />
 						<input placeholder="Location" />
 						<button>Search</button>
 						<Link to="/shoppingcart">
 							<div className="shoppingCartIconContainer">
-								<i class="fas fa-cart-arrow-down" />
+								<i className="fas fa-cart-arrow-down" />
 								<div>{content.shoppingListCounter}</div>
 							</div>
 						</Link>
 						<Link to="/notification">
 							<div className="notificationIconContainer">
-								<i class="fas fa-bell" />
+								<i className="fas fa-bell" />
 								<div>0</div>
 							</div>
 						</Link>
