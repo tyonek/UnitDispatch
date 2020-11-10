@@ -1,0 +1,20 @@
+{
+  "kidus": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-unitdispatch-kidus-181938-authRole",
+      "UnauthRoleArn": "arn:aws:iam::685456290219:role/amplify-unitdispatch-kidus-181938-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::685456290219:role/amplify-unitdispatch-kidus-181938-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-unitdispatch-kidus-181938-deployment",
+      "UnauthRoleName": "amplify-unitdispatch-kidus-181938-unauthRole",
+      "StackName": "amplify-unitdispatch-kidus-181938",
+      "StackId": "arn:aws:cloudformation:us-west-2:685456290219:stack/amplify-unitdispatch-kidus-181938/30e064c0-22fb-11eb-a16d-0ac264b4cd07",
+      "AmplifyAppId": "d3lwt4mgp17iy"
+    },
+    "categories": {
+      "auth": {
+        "unitdispatchce71dd3c": {}
+      }
+    }
+  }
+}

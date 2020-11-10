@@ -43,8 +43,10 @@ export const sellerForm = (props) => {
 		'VideoGames',
 		'Watches'
 	];
+	
+
 	return (
-		<form>
+		<form onSubmit={props.uploadFile}>
 			<input placeholder="Brand" />
 			<select defaultValue>
                 <option value="Select">Select Condition... </option>
@@ -52,10 +54,10 @@ export const sellerForm = (props) => {
 				<option value="Good">Good</option>
 				<option value="Excellent">Excellent</option>
 			</select>
-			<select>{categoryOfItems.map((category) => <option>{category}</option>)}</select>
+			<select>{categoryOfItems.map((category,i) => <option key={i}>{category}</option>)}</select>
 			<textarea placeholder="Description" />
 			<input placeholder="Price" />
-            <input type="file" name="datafile" size="40"/>
+            <input type="file" accept="image/jpg" name="datafile" size="40" onChange={props.uploadFile}/>
             <button type="submit">Done</button>
 		</form>
 	);

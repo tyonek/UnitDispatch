@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import AWS from 'aws-sdk';
 import './App.css';
 import LandingPage from './routes/LandingPage/LandingPage';
 import HowToSell from './routes/AccountInfo/HowToSell/HowToSell';
@@ -13,50 +14,81 @@ import Sell from './routes/sell/sell';
 import Selling from './routes/selling/selling';
 import Orders from './routes/Orders/Orders';
 import ShoppingCart from './routes/shoppingCart/shoppingCart';
-import WishList from './routes/wishList/wishList'
+import WishList from './routes/wishList/wishList';
 import Context from './context';
-export default class App extends Component {
+
+import ReactS3 from 'react-s3';
+import { uploadFile } from 'react-s3';
+
+class App extends Component {
+	constructor() {
+		super();
+	
+		this.config = {
+			bucketName: 'unitdispatch',
+			dirName: 'photos' /* optional */,
+			region: 'us-west-2',
+			accessKeyId: 'AKIAIQRNO3DG5745PXEQ',
+			secretAccessKey: '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'
+		};
+
+		
+	}
 	state = {
 		shoppingCart: [],
 		wishList: [],
 		items: [
 			{
-				id:1,
+				id: 1,
 				Name: 'Name',
 				Description: 'Description',
 				Price: 'Price',
 				Location: 'Location',
 				Rating: 'Rating',
 				wishlist: false,
-				DatePosted: 'DatePosted'
+				DatePosted: 'DatePosted',
+				quantity: 0
 			},
 			{
-				id:2,
+				id: 2,
 				Name: 'Name',
 				Description: 'Description',
 				Price: 'Price',
 				Location: 'Location',
 				Rating: 'Rating',
 				wishlist: false,
-				DatePosted: 'DatePosted'
+				DatePosted: 'DatePosted',
+				quantity: 0
 			},
 			{
-				id:3,
+				id: 3,
 				Name: 'Name',
 				Description: 'Description',
 				Price: 'Price',
 				Location: 'Location',
 				Rating: 'Rating',
 				wishlist: false,
-				DatePosted: 'DatePosted'
+				DatePosted: 'DatePosted',
+				quantity: 0
 			}
-		]
+		],
+		progress: 0
 	};
 
 	addItemsToShoppingCart = (item) => {
 		let currentShoppingCart = this.state.shoppingCart;
-		currentShoppingCart.push(item);
+
+		currentShoppingCart.map((shoppingListItems) => {
+			if (item.id === shoppingListItems.id) {
+				shoppingListItems.quantity = shoppingListItems.quantity + 1;
+			}
+		});
+		if (item.quantity === 0) {
+			item.quantity = 1;
+			currentShoppingCart.push(item);
+		}
 		this.setState({ shoppingCart: currentShoppingCart });
+		console.log(this.state.shoppingCart);
 	};
 	addItemsToWishList = (item) => {
 		console.log(item.wishlist);
@@ -69,15 +101,47 @@ export default class App extends Component {
 			item.wishlist = true;
 			wishList.push(item);
 			this.setState({ wishList: wishList, item: item });
-			console.log(item.wishlist);
 		}
+	};
+
+	RemoveItemsFromShoppingCart = (item, qty) => {
+		let currentShoppingCart = this.state.shoppingCart;
+		currentShoppingCart = currentShoppingCart.filter((shoppingItem) => {
+			if (shoppingItem.id === item.id) {
+				if (shoppingItem.quantity > qty) {
+					shoppingItem.quantity = shoppingItem.quantity - qty;
+					if (shoppingItem.quantity === 0) {
+						return shoppingItem.id !== item.id;
+					}
+				} else {
+					shoppingItem.quantity = 0;
+					return shoppingItem.id !== item.id;
+				}
+			}
+			return shoppingItem;
+		});
+
+		this.setState({ shoppingCart: currentShoppingCart });
+	};
+
+	addNewProductToSell = (item) => {
+		let currentItem = this.state.items;
+		currentItem.push(item);
+		this.setState({ item: currentItem });
+	};
+
+	uploadFile = (e) => {
+		
+		const file = e.target.files[0];
+
+		ReactS3.uploadFile(file,this.config).then((data) => console.log(data)).catch((err) => console.error(err));
 	};
 	render() {
 		const value = {
 			shoppingListCounter: this.state.shoppingCart.length,
 			items: this.state.items
 		};
-		console.log(this.state.wishList);
+
 		return (
 			<div>
 				<Context.Provider value={value}>
@@ -100,13 +164,28 @@ export default class App extends Component {
 						<Route path={'/login'} component={Login} />
 						<Route path={'/standard'} compomnent={Standard} />
 						<Route path={'/transporter'} component={Transporter} />
-						<Route path={'/sell'} component={Sell} />
+						<Route
+							path={'/sell'}
+							component={() => (
+								<Sell uploadFile={this.uploadFile} addNewProductToSell={this.addNewProductToSell} />
+							)}
+						/>
 						<Route path={'/selling'} component={Selling} />
 						<Route path={'/orders'} component={Orders} />
-						<Route path={'/wishlist'} component={()=><WishList wishList={this.state.wishList} addItemsToWishList={this.addItemsToWishList} />} />
+						<Route
+							path={'/wishlist'}
+							component={() => (
+								<WishList wishList={this.state.wishList} addItemsToWishList={this.addItemsToWishList} />
+							)}
+						/>
 						<Route
 							path={'/shoppingcart'}
-							component={() => <ShoppingCart shoppingCart={this.state.shoppingCart} />}
+							component={() => (
+								<ShoppingCart
+									shoppingCart={this.state.shoppingCart}
+									RemoveItemsFromShoppingCart={this.RemoveItemsFromShoppingCart}
+								/>
+							)}
 						/>
 					</Switch>
 				</Context.Provider>
@@ -114,3 +193,5 @@ export default class App extends Component {
 		);
 	}
 }
+
+export default App;

@@ -9,7 +9,7 @@ export default class wishList extends Component {
         return (
             <div>
             {
-                this.props.wishList.map((item)=> <Items item={item} addItemsToWishList={this.props.addItemsToWishList}/>)
+                this.props.wishList.map((item,i)=> <Items item={item} key={i} addItemsToWishList={this.props.addItemsToWishList}/>)
             }
                
             </div>
