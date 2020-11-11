@@ -18,21 +18,20 @@ import WishList from './routes/wishList/wishList';
 import Context from './context';
 
 import ReactS3 from 'react-s3';
-import { uploadFile } from 'react-s3';
+import config from './config';
 
 class App extends Component {
 	constructor() {
 		super();
-	
+		console.log(config);
 		this.config = {
-			bucketName: 'unitdispatch',
+			bucketName: config.bucketName,
 			dirName: 'photos' /* optional */,
-			region: 'us-west-2',
-			accessKeyId: 'AKIAIQRNO3DG5745PXEQ',
+			region: config.region,
+			accessKeyId: config.accessKeyId
+			,
 			secretAccessKey: 'gRT0qPy92BQzW7TgOLdQCKxpgLboZOWwv28DkQuW'
 		};
-
-		
 	}
 	state = {
 		shoppingCart: [],
@@ -71,8 +70,7 @@ class App extends Component {
 				DatePosted: 'DatePosted',
 				quantity: 0
 			}
-		],
-		progress: 0
+		]
 	};
 
 	addItemsToShoppingCart = (item) => {
@@ -131,10 +129,9 @@ class App extends Component {
 	};
 
 	uploadFile = (e) => {
-		
 		const file = e.target.files[0];
 
-		ReactS3.uploadFile(file,this.config).then((data) => console.log(data)).catch((err) => console.error(err));
+		ReactS3.uploadFile(file, this.config).then((data) => console.log(data)).catch((err) => console.error(err));
 	};
 	render() {
 		const value = {
