@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import AWS from 'aws-sdk';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import LandingPage from './routes/LandingPage/LandingPage';
 import HowToSell from './routes/AccountInfo/HowToSell/HowToSell';
@@ -19,60 +18,84 @@ import Context from './context';
 
 import ReactS3 from 'react-s3';
 import config from './config';
-
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 class App extends Component {
 	constructor() {
 		super();
-		console.log(config);
+
 		this.config = {
 			bucketName: config.bucketName,
 			dirName: 'photos' /* optional */,
 			region: config.region,
-			accessKeyId: config.accessKeyId
-			,
+			accessKeyId: config.accessKeyId,
 			secretAccessKey: 'gRT0qPy92BQzW7TgOLdQCKxpgLboZOWwv28DkQuW'
 		};
-	}
-	state = {
-		shoppingCart: [],
-		wishList: [],
-		items: [
-			{
-				id: 1,
-				Name: 'Name',
-				Description: 'Description',
-				Price: 'Price',
-				Location: 'Location',
-				Rating: 'Rating',
-				wishlist: false,
-				DatePosted: 'DatePosted',
-				quantity: 0
-			},
-			{
-				id: 2,
-				Name: 'Name',
-				Description: 'Description',
-				Price: 'Price',
-				Location: 'Location',
-				Rating: 'Rating',
-				wishlist: false,
-				DatePosted: 'DatePosted',
-				quantity: 0
-			},
-			{
-				id: 3,
-				Name: 'Name',
-				Description: 'Description',
-				Price: 'Price',
-				Location: 'Location',
-				Rating: 'Rating',
-				wishlist: false,
-				DatePosted: 'DatePosted',
-				quantity: 0
-			}
-		]
-	};
 
+		this.state = {
+			shoppingCart: [],
+			wishList: [],
+			items: [
+				{
+					id: 1,
+					Name: 'Name',
+					Description: 'Description',
+					Price: 'Price',
+					Location: 'Location',
+					Rating: 'Rating',
+					wishlist: false,
+					DatePosted: 'DatePosted',
+					quantity: 0
+				},
+				{
+					id: 2,
+					Name: 'Name',
+					Description: 'Description',
+					Price: 'Price',
+					Location: 'Location',
+					Rating: 'Rating',
+					wishlist: false,
+					DatePosted: 'DatePosted',
+					quantity: 0
+				},
+				{
+					id: 3,
+					Name: 'Name',
+					Description: 'Description',
+					Price: 'Price',
+					Location: 'Location',
+					Rating: 'Rating',
+					wishlist: false,
+					DatePosted: 'DatePosted',
+					quantity: 0
+				}
+			],
+			currentUser: null
+		};
+	}
+
+	unsubscribeFromAuth = null;
+	componentDidMount() {
+		this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+			if (userAuth) {
+				console.log(userAuth.photoURL)
+				const userRef = await createUserProfileDocument(userAuth);
+
+				userRef.onSnapshot((snapshot) => {
+					this.setState({
+						currentUser: {
+							id: snapshot.id,
+							...snapshot.data()
+						}
+					});
+				});
+			}
+			this.setState({ currentUser: userAuth });
+		});
+	}
+
+	componentWillUnmount() {
+		this.unsubscribeFromAuth();
+	}
 	addItemsToShoppingCart = (item) => {
 		let currentShoppingCart = this.state.shoppingCart;
 
@@ -134,9 +157,11 @@ class App extends Component {
 		ReactS3.uploadFile(file, this.config).then((data) => console.log(data)).catch((err) => console.error(err));
 	};
 	render() {
+		
 		const value = {
 			shoppingListCounter: this.state.shoppingCart.length,
-			items: this.state.items
+			items: this.state.items,
+			currentUser: this.state.currentUser
 		};
 
 		return (
@@ -157,8 +182,20 @@ class App extends Component {
 						<Route path={'/howtosell'} component={HowToSell} />
 						<Route path={'/howtobuy'} component={HowToBuy} />
 						<Route path={'/howtotransport'} component={HowtoTransport} />
-						<Route path={'/signup'} component={SignUp} />
-						<Route path={'/login'} component={Login} />
+						<Route
+							path={'/signup'}
+							component={(props) => <SignUp {...props} currentUser={this.state.currentUser} />}
+						/>
+						<Route
+							exact
+							path={'/login'}
+							render={(props) =>
+								this.state.currentUser ? (
+									<Redirect to="/" />
+								) : (
+									<Login currentUsers={this.state.currentUser} {...props} />
+								)}
+						/>
 						<Route path={'/standard'} compomnent={Standard} />
 						<Route path={'/transporter'} component={Transporter} />
 						<Route

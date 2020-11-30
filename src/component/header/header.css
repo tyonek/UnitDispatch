@@ -1,62 +1,70 @@
-header .Links{
-    display: flex;
-    height: 50px;
-    margin: 0 20px;    
-    float: right;
+header .Links {
+	width: 95%;
+	display: flex;
+	justify-content: space-between;
+	height: 50px;
+	margin: 10px 20px;
+	margin-bottom: 50px;
+	float: right;
+}
+.personlizedAccountInfo {
+	display: flex;
+}
+header .Links a {
+	margin-right: 10px;
+}
+header .content {
+	display: flex;
+	height: 50px;
+	justify-content: space-evenly;
+	margin: 10px auto;
+	width: 90%;
+}
+header .content h1 {
+	line-height: 10px;
+}
+header .content svg {
+	font-size: 30px;
+	margin-top: 10px;
+}
+.account {
+	width: 70px;
+	height: 70px;
+	border-radius: 100%;
 
+	text-align: center;
+	padding: 10px;
+	cursor: pointer;
 }
-header .Links a{
- margin-right:10px ;
-
+.account img {
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
 }
-header .content{
-    display: flex;
-    height: 50px;
-    justify-content: space-evenly;
-    margin: 10px auto;
-    width: 90%;
+.accountInfo ul {
+	list-style: none;
+	text-align: center;
+	background: rgb(224, 224, 224);
+	margin: 2px auto;
+	z-index: 1000;
+	position: relative;
 }
-header .content h1{
-   line-height: 10px;
+.accountInfo ul li {
+	margin: 2px auto;
+	padding: 5px;
+	cursor: pointer;
 }
-header .content svg{
-    font-size: 30px;
-    margin-top: 10px;
+.shoppingCartIconContainer,
+.notificationIconContainer {
+	height: 50px;
+	width: 50px;
+	cursor: pointer;
 }
-header .content .account{
-   width: 70px;
-   height: 70px;
-   border-radius: 100%;
-   border: 2px solid #111111;
-   text-align: center;
-   padding: 10px;
-   cursor: pointer;
+.shoppingCartIconContainer div {
+	transform: translate(35px, -40px);
+	color: red;
 }
-header .content .accountInfo ul{
- list-style: none;
- text-align: center;
- background: rgb(224, 224, 224);
- margin: 2px auto;
- z-index: 1000;
- position: relative;
-
-}
-header .content .accountInfo ul li{
- margin: 2px auto;
- padding: 5px;
- cursor: pointer;
-
-}
-.shoppingCartIconContainer, .notificationIconContainer{
-    height: 50px;
-    width: 50px;
-    cursor: pointer;
-}
-.shoppingCartIconContainer div{
-    transform: translate(35px,-40px);
-    color: red;
-}
-.notificationIconContainer div{
-    transform: translate(28px,-40px);
-    color: red;
+.notificationIconContainer div {
+	transform: translate(28px, -40px);
+	color: red;
 }
