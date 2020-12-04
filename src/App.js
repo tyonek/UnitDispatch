@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setCurrentUser,setCurrentUserShoppingCart,setCurrentUserWishList } from './redux/user/user.action';
 import './App.css';
 import LandingPage from './routes/LandingPage/LandingPage';
 import HowToSell from './routes/AccountInfo/HowToSell/HowToSell';
@@ -14,26 +16,16 @@ import Selling from './routes/selling/selling';
 import Orders from './routes/Orders/Orders';
 import ShoppingCart from './routes/shoppingCart/shoppingCart';
 import WishList from './routes/wishList/wishList';
-import Context from './context';
+
 
 import ReactS3 from 'react-s3';
-import config from './config';
+
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 class App extends Component {
 	constructor() {
 		super();
 
-		this.config = {
-			bucketName: config.bucketName,
-			dirName: 'photos' /* optional */,
-			region: config.region,
-			accessKeyId: config.accessKeyId,
-			secretAccessKey: 'gRT0qPy92BQzW7TgOLdQCKxpgLboZOWwv28DkQuW'
-		};
-
 		this.state = {
-			shoppingCart: [],
-			wishList: [],
 			items: [
 				{
 					id: 1,
@@ -68,28 +60,29 @@ class App extends Component {
 					DatePosted: 'DatePosted',
 					quantity: 0
 				}
-			],
-			currentUser: null
+			]
 		};
 	}
 
 	unsubscribeFromAuth = null;
 	componentDidMount() {
+		const { setCurrentUser } = this.props;
+
 		this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
 			if (userAuth) {
-				console.log(userAuth.photoURL)
 				const userRef = await createUserProfileDocument(userAuth);
 
 				userRef.onSnapshot((snapshot) => {
-					this.setState({
+					setCurrentUser({
 						currentUser: {
 							id: snapshot.id,
 							...snapshot.data()
 						}
 					});
 				});
+			} else {
+				setCurrentUser(null);
 			}
-			this.setState({ currentUser: userAuth });
 		});
 	}
 
@@ -97,7 +90,7 @@ class App extends Component {
 		this.unsubscribeFromAuth();
 	}
 	addItemsToShoppingCart = (item) => {
-		let currentShoppingCart = this.state.shoppingCart;
+		let currentShoppingCart = [...this.props.shoppingCart];
 
 		currentShoppingCart.map((shoppingListItems) => {
 			if (item.id === shoppingListItems.id) {
@@ -108,19 +101,23 @@ class App extends Component {
 			item.quantity = 1;
 			currentShoppingCart.push(item);
 		}
-		this.setState({ shoppingCart: currentShoppingCart });
-		console.log(this.state.shoppingCart);
+		this.props.setShoppingCart(currentShoppingCart );
+		console.log(this.props.shoppingCart);
+		
 	};
 	addItemsToWishList = (item) => {
 		console.log(item.wishlist);
 		if (item.wishlist === true) {
-			let wishList = this.state.wishList.filter((wishedItem) => wishedItem.id !== item.id);
+			let wishList = this.props.wishList.filter((wishedItem) => wishedItem.id !== item.id);
 			item.wishlist = false;
-			this.setState({ wishList: wishList, item: item });
+			this.props.setWishList(wishList);
+			this.setState({item: item });
 		} else {
-			let wishList = this.state.wishList;
+			let wishList = [...this.props.wishList];
 			item.wishlist = true;
 			wishList.push(item);
+
+			this.props.setWishList(wishList);
 			this.setState({ wishList: wishList, item: item });
 		}
 	};
@@ -158,74 +155,80 @@ class App extends Component {
 	};
 	render() {
 		
-		const value = {
-			shoppingListCounter: this.state.shoppingCart.length,
-			items: this.state.items,
-			currentUser: this.state.currentUser
-		};
-
 		return (
 			<div>
-				<Context.Provider value={value}>
-					<Switch>
-						<Route
-							exact
-							path={'/'}
-							component={() => (
-								<LandingPage
-									addItemsToShoppingCart={this.addItemsToShoppingCart}
-									addItemsToWishList={this.addItemsToWishList}
-									items={this.state.items}
-								/>
+				<Switch>
+					<Route
+						exact
+						path={'/'}
+						component={() => (
+							<LandingPage
+								addItemsToShoppingCart={this.addItemsToShoppingCart}
+								addItemsToWishList={this.addItemsToWishList}
+								items={this.state.items}
+							/>
+						)}
+					/>
+					<Route path={'/howtosell'} component={HowToSell} />
+					<Route path={'/howtobuy'} component={HowToBuy} />
+					<Route path={'/howtotransport'} component={HowtoTransport} />
+					<Route
+						path={'/signup'}
+						component={(props) => <SignUp {...props} currentUser={this.state.currentUser} />}
+					/>
+					<Route
+						exact
+						path={'/login'}
+						render={(props) =>
+							this.props.currentUser ? (
+								<Redirect to="/" />
+							) : (
+								<Login currentUsers={this.state.currentUser} {...props} />
 							)}
-						/>
-						<Route path={'/howtosell'} component={HowToSell} />
-						<Route path={'/howtobuy'} component={HowToBuy} />
-						<Route path={'/howtotransport'} component={HowtoTransport} />
-						<Route
-							path={'/signup'}
-							component={(props) => <SignUp {...props} currentUser={this.state.currentUser} />}
-						/>
-						<Route
-							exact
-							path={'/login'}
-							render={(props) =>
-								this.state.currentUser ? (
-									<Redirect to="/" />
-								) : (
-									<Login currentUsers={this.state.currentUser} {...props} />
-								)}
-						/>
-						<Route path={'/standard'} compomnent={Standard} />
-						<Route path={'/transporter'} component={Transporter} />
-						<Route
-							path={'/sell'}
-							component={() => (
-								<Sell uploadFile={this.uploadFile} addNewProductToSell={this.addNewProductToSell} />
-							)}
-						/>
-						<Route path={'/selling'} component={Selling} />
-						<Route path={'/orders'} component={Orders} />
-						<Route
-							path={'/wishlist'}
-							component={() => (
-								<WishList wishList={this.state.wishList} addItemsToWishList={this.addItemsToWishList} />
-							)}
-						/>
-						<Route
-							path={'/shoppingcart'}
-							component={() => (
-								<ShoppingCart
-									shoppingCart={this.state.shoppingCart}
-									RemoveItemsFromShoppingCart={this.RemoveItemsFromShoppingCart}
-								/>
-							)}
-						/>
-					</Switch>
-				</Context.Provider>
+					/>
+					<Route path={'/standard'} compomnent={Standard} />
+					<Route path={'/transporter'} component={Transporter} />
+					<Route
+						path={'/sell'}
+						component={() => (
+							<Sell uploadFile={this.uploadFile} addNewProductToSell={this.addNewProductToSell} />
+						)}
+					/>
+					<Route path={'/selling'} component={Selling} />
+					<Route path={'/orders'} component={Orders} />
+					<Route
+						path={'/wishlist'}
+						component={() => (
+							<WishList wishList={this.state.wishList} addItemsToWishList={this.addItemsToWishList} />
+						)}
+					/>
+					<Route
+						path={'/shoppingcart'}
+						component={() => (
+							<ShoppingCart
+								shoppingCart={this.state.shoppingCart}
+								RemoveItemsFromShoppingCart={this.RemoveItemsFromShoppingCart}
+							/>
+						)}
+					/>
+				</Switch>
 			</div>
 		);
 	}
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+	setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+	setShoppingCart: (shoppingCart) => dispatch(setCurrentUserShoppingCart(shoppingCart)),
+	setWishList:(wishList)=>dispatch(setCurrentUserWishList(wishList))
+});
+
+const mapStateProps = ({ user }) =>{
+	console.log(user)
+	return({
+	currentUser: user.currentUser,
+	shoppingCart: user.shoppingCart,
+	wishList:user.wishList
+})};
+
+export default connect(mapStateProps, mapDispatchToProps)(App);

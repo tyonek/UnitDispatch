@@ -4,9 +4,7 @@ import Header from '../../component/header/header';
 import Item from '../../component/items/items';
 import './LandingPage.css';
 export default class LandingPage extends Component {
-	state = {
-	
-	};
+
 	render() {
 		return (
 			<div>
